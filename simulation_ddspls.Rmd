@@ -84,6 +84,7 @@ where each row of $\mathbf{E}_y$ follows $\mathcal{N}(\mathbf{0},\mathbb{I})$,
 $\sigma_y=0.1$
 and the three first columns of $\mathbf{C}_y$ (among five) are the three first columns of $\mathbf{C}_1$.
 
+**N.B.**: In the submitted work, the `seed` parameter was fixed to the values `seed`$\in[\!1,100]\!]$, corresponding to the 100 analyzed datasets.
 
 # Data Generation
 
