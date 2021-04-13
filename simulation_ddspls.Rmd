@@ -1,0 +1,159 @@
+---
+title: "Simulation for ddsPLS"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Simulation designs
+
+The following repository gathers the simulated data-sets used to test the data-driven sparse partial least squares (**ddsPLS**) methodology. There are 3 simulation designs all of which follow a latent variable model
+
+\begin{equation}
+\left\{
+\begin{array}{l}
+       \mathbf{x} = \mathbf{A}'\boldsymbol{\phi} + \boldsymbol{\epsilon} \text{ where } \mathbf{A}=[\mathbf{a}_{1},\cdots,\mathbf{a}_{\mathcal{R}}]'\in\mathcal{M}_{\mathcal{R}\times p}(\mathbb{R}) \text{ with } |\!|\mathbf{a}_{r}|\!| \neq 0, \\
+    \mathbf{y} = \mathbf{D}'\boldsymbol{\phi}+ \boldsymbol{\xi} \text{ where } \mathbf{D}=[\mathbf{d}_{1},\cdots,\mathbf{d}_{\mathcal{R}}]'\in\mathcal{M}_{\mathcal{R}\times q}(\mathbb{R})   \text{ with } |\!|\mathbf{d}_{r}|\!| \neq 0, \\ 
+    \text{with } \mbox{var} (\boldsymbol{\phi})=\mathbb{I}_\mathcal{R}
+    \text{, }\mathbb{E} \boldsymbol{\phi}=\mathbf{0}_\mathcal{R}\text{, }\mathbb{E} \boldsymbol{\epsilon}=\mathbf{0}_p\text{, }\mathbb{E} \boldsymbol{\xi}=\mathbf{0}_q,\\
+    \mbox{cov}(\boldsymbol{\phi},\boldsymbol{\epsilon})=\mathbf{0}_{\mathcal{R}\times q}\text{, }\mbox{cov}(\boldsymbol{\phi},\boldsymbol{\xi})=\mathbf{0}_{\mathcal{R}\times q}\text{, }\mbox{cov}(\boldsymbol{\epsilon},\boldsymbol{\xi})=\mathbf{0}_{p\times q}.
+    \end{array}
+    \right.
+    \label{equ:latencymodel_phi_prop2}
+\end{equation}
+
+Where $\boldsymbol{\phi}$ is a $\mathcal{R}$-dimensional random variable. It implies that 
+$\mbox{var}(\mathbf{x})=\mathbf{A}'\mathbf{A} + \mbox{var}(\boldsymbol{\epsilon})$ and $\mbox{var}(\mathbf{y})=\mathbf{D}'\mathbf{D} + \mbox{var}(\boldsymbol{\xi})$ and  $\mbox{cov}(\mathbf{y},\mathbf{x})=\mathbf{D}'\mathbf{A}$. 
+
+More precisely, each design is defined with different matrices **A** and **D** such as:
+
+* **Toy Example** corresponds to
+\begin{equation}
+\begin{array}{c c c}
+     \mathbf{A} =\sqrt{1-\sigma^2}
+     \left(\begin{array}{ccccc}
+         \boldsymbol{1}_{50}' & \boldsymbol{0}_{950}'
+     \end{array} \right),
+     &
+     \mathbf{D}=\sqrt{1-\sigma^2}
+     \left(\begin{array}{c}
+         1 
+     \end{array} \right),
+\end{array}
+\label{equ:zero_matrices_toy}
+\end{equation}
+where $1-\sigma^2=0.9025$ and
+$$\boldsymbol{\psi}=({\phi}',\boldsymbol{\epsilon}_{1\dots50}'/\sigma,\boldsymbol{\epsilon}_{51\dots1000}',\xi/\sigma)'\sim \mathcal{N}\left(\mathbf{0},\mathbb{I}_{1+1000+1}\right).$$
+
+* **Design 1** corresponds to $\mathcal{R}=5$ latent variables projected on $p=1000$ components on the **x** part and $q=3$ components on the **y** part. The matrices **A** and **D** take the form
+
+\begin{equation}
+\begin{array}{c c c}
+     \mathbf{A} =\sqrt{1-\sigma^2}
+     \left(\begin{array}{ccc}
+         \alpha_3\boldsymbol{1}_{3,50} & \boldsymbol{0}_{3,50} &  \boldsymbol{0}_{3,900}\\
+         \boldsymbol{0}_{2,50} & \alpha_2\boldsymbol{1}_{2,50} & \boldsymbol{0}_{2,900}\\
+     \end{array} \right)_{(5,1000)}
+     &\text{ and }&
+     \mathbf{D}=\sqrt{1-\sigma^2}
+     \left(\begin{array}{ccc}
+       \alpha_3\boldsymbol{1}_{3,1} & \boldsymbol{0}_{3,1} & \boldsymbol{0}_{3,1} \\ 
+    \boldsymbol{0}_{2,1} & \alpha_2\boldsymbol{1}_{2,1} & \boldsymbol{0}_{2,1} \\
+     \end{array} \right)_{(5,3)},
+\end{array}
+\label{equ:design_1}
+\end{equation}
+
+where $\forall k \in \mathbb{N}^\star, \ \alpha_k=1/\sqrt{k}$, $\sqrt{1-\sigma^2}=0.99$ and 
+$$\boldsymbol{\psi}=(\boldsymbol{\phi}',\boldsymbol{\epsilon}'_{1\dots100}/\sigma,
+\boldsymbol{\epsilon}'_{101\dots1000},\boldsymbol{\xi}'_{1\dots2}/\sigma,\xi_{3})'\sim \mathcal{N}\left(\mathbf{0},\mathbb{I}_{5+1000+3}\right).$$
+
+* **Design 2** corresponds to the concatenation of two blocks, $\mathbf{X}_1$ ($p_1=500$) corresponds to classical spectroscopy, $\mathbf{X}_2$ ($p_2=5000$) corresponds to Nuclear Magnetic Resonance (NMR) classical. Both of those blocks are based on $\mathcal{R}_t=10$ simulating different **spectra** ($\mathbf{S}_1$ and $\mathbf{S}_2$). The sampling randomness (equivalent of $\boldsymbol{\phi}$) is described by the **concentration** matrices ($\mathbf{C}_1$ and $\mathbf{C}_2$). In total the blocks follow the model
+\begin{equation}
+\mathbf{X}_t=
+         \sqrt{1-\sigma_t^2}\mathbf{C}_t\mathbf{S}_t +
+         \sigma_t\mathbf{E}_t
+    \label{equ:design_3_x}
+\end{equation}
+which does not follow the model given in introduction since, among other things, the concentration matrices are not constrained to be of variance equal to the identity. The parameter $\sigma_t$ is the standard deviation of the additive noise and each row of $\mathbf{E}_t$ follows a white Gaussian multivariate ($p_t$-dimensional) law.
+The first five columns of $\mathbf{C}_2$ have been replaced by the first five columns of $\mathbf{C}_1$. 
+The **Y** block ($q=5$) follows
+$\mathbf{Y}=         \sqrt{1-\sigma_y^2}\mathbf{C}_y +         \sigma_y\mathbf{E}_y$,
+where each row of $\mathbf{E}_y$ follows $\mathcal{N}(\mathbf{0},\mathbb{I})$,
+$\sigma_y=0.1$
+and the three first columns of $\mathbf{C}_y$ (among five) are the three first columns of $\mathbf{C}_1$.
+
+
+# Data Generation
+
+To simulate from one of the three designs proposed before, a single file must be sourced:
+
+```{r, eval=T}
+source("./functions.R")
+```
+
+In order to use the **ddsPLS** methodology, it must be installed, from GitHub for example **hlorenzo/ddsPLS2**
+```{r, eval=F}
+  # install.packages("devtools")
+  devtools::install_github("hlorenzo/ddsPLS2", build_vignettes = TRUE)
+```
+
+As you can notice, a **Vignette** is attached to the previous package and can be easily accessed using the command
+
+```{r, eval=F}
+vignette("ddsPLS2")
+```
+
+## Toy Example
+
+A simulation of the **Toy Example** is generated such as
+```{r, eval=T}
+simu_toy <- get_toy_example(n=50,sqrt_1_minus_sig2 = 0.9025,p = 1000)
+```
+
+structure can be analyzed with the **ddsPLS** methodology
+
+```{r, eval=T,fig.width=5,fig.height=5,fig.align="center"}
+library(ddsPLS2)
+lambdas <- seq(0,1,length.out = 30) # to be tested lambda values
+n_B <- 100 # number of bootstrap samples
+model_toy <- ddsPLS(simu_toy$X,simu_toy$Y,
+                   lambdas = lambdas,
+                   n_B = n_B,
+                   verbose = T # whether trace during process
+                   )
+```
+
+## Design 1
+
+For this design it comes
+```{r, eval=T}
+simu_1 <- get_design_1(n=50,sqrt_1_minus_sig2 = 0.99,p = 1000,q = 3)
+```
+
+and
+
+```{r model1, eval=T,fig.width=5,fig.height=5,fig.align="center"}
+model_1 <- ddsPLS(simu_1$X,simu_1$Y,lambdas = lambdas,n_B=n_B,verbose=T)
+```
+
+
+## Design 2
+
+For this design it comes
+```{r, eval=T}
+seed <- 1 # random seed to generate dataset
+ncpX <- 10 # Number of latent variables in x blocks
+ncpXCom <- 5 # Number of latent variables in common between x blocks
+ncpXYCom <- 3 # Number of latent variables in common between y block and x blocks
+simu_2 <- get_design_2(seed=seed,n=50,q=5,p1=500,p2=5000,
+                       sigma1=0.05,sigma2=0.05,sigmaY = 0.1,
+                       ncpX=ncpX,ncpXCom=ncpXCom,ncpXYCom=ncpXYCom)
+```
+
+and
+
+```{r model2, eval=T,fig.width=5,fig.height=5,fig.align="center"}
+model_2 <- ddsPLS(do.call(cbind,simu_2$Xs),simu_2$Y,lambdas = lambdas,n_B=n_B,verbose=T)
+```

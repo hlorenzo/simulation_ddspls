@@ -1,27 +1,20 @@
-The following repository gathers the simulated datasets.
+# Simulation designs
 
-## Design 1
-
-For the **Design 1** of simulations, data-sets can be easily simulated sourcing the script _simulate_desing_1.R_.
+The following repository gathers the simulated data-sets used to test the data-driven sparse partial least squares (**ddsPLS**) methodology, accessible via the GitHub repository
+GitHub for example **hlorenzo/ddsPLS2**
 ```r
-  source("./simulate_desing_1.R")
+  # install.packages("devtools")
+  devtools::install_github("hlorenzo/ddsPLS2", build_vignettes = TRUE)
 ```
-It creates the function `get_design_1` with different transparent arguments and return a list with two named matrices, `X` ($n\times 1000$) and `Y` ($n\times 3$).
 
+The RMarkdown **simulation_ddspls.Rmd** and its **HTML** version **simulation_ddspls.html** allow to get more insights on the ways to simulate following one of the three simulation structures. 
 
-## Design 2
+In a nutshell, the files **functions.R** gathers 3 functions to generate datasets associated with each of the 3 dataset structures:
 
-For the **Design 2** of simulations, data-sets can be easily simulated sourcing the script _simulate_desing_2.R_.
-```r
-  source("./simulate_desing_2.R")
-```
-In this script, the function `simulateMulti` is used as follows, where the argument `seed` fixes the seed ($\in [\![0,100]\!]$ for the scope of our simulations).
-```r
-seed <- 1
-datas <- simulateMulti(seed=seed,plot=TRUE)
-X <- cbind(Xs$X1,Xs$X2)
-Y <- datas$Y
-S_common <- cbind(datas$S$SXY$S1,datas$S$SXY$S2)
-```
-The option `plot`, set to `TRUE` in the example, allows to visualize the two blocks of the **x** part (first row) and the correlation between the **y** variable responses and the concatenation of the two blocks of the **x** part.
-Plus, the `S_common` is the concatenation of the spectra, useful to get different statistics.
+* `get_toy_example` for **Toy Example** simulation structure,
+* `get_design_1` for **Design 1** simulation structure,
+* `get_design_2`  for **Design 2** simulation structure.
+
+The **Design 2** simulation structure has already been used for publication purpose in
+
+Cloarec, O. (2014), *Can we beat over‒fitting?*, Journal of Chemometrics, 28, pages 610– 614, **doi: 10.1002/cem.2602**
