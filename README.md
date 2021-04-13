@@ -13,7 +13,7 @@ In a nutshell, the files **functions.R** gathers 3 functions to generate dataset
 
 * `get_toy_example` for **Toy Example** simulation structure,
 * `get_design_1` for **Design 1** simulation structure,
-* `get_design_2`  for **Design 2** simulation structure.
+* `get_design_2`  for **Design 2** simulation structure. For this design, an argument `seed` is used, note that the values `seed`$\in[\!1,100]\!]$ have been used in the purpose of the simulations for **ddsPLS**.
 
 The **Design 2** simulation structure has already been used for publication purpose in
 
