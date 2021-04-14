@@ -1,6 +1,6 @@
 # Simulation designs
 
-The following repository gathers the simulated data-sets used to test the data-driven sparse partial least squares (**ddsPLS**) methodology, accessible via the GitHub repository
+This repository (`"hlorenzo/simulation_ddspls"`) gathers the simulated data-sets used to test the data-driven sparse partial least squares (**ddsPLS**) methodology, accessible via the GitHub repository
 GitHub for example **hlorenzo/ddsPLS2**
 ```r
   # install.packages("devtools")
